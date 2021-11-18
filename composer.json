@@ -30,13 +30,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Walirazzaq\\LaravelModelAttributeEvents\\": "src",
-            "Walirazzaq\\LaravelModelAttributeEvents\\Database\\Factories\\": "database/factories"
+            "Walirazzaq\\AttributeEvents\\": "src",
+            "Walirazzaq\\AttributeEvents\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Walirazzaq\\LaravelModelAttributeEvents\\Tests\\": "tests"
+            "Walirazzaq\\AttributeEvents\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -49,7 +49,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Walirazzaq\\LaravelModelAttributeEvents\\LaravelModelAttributeEventsServiceProvider"
+                "Walirazzaq\\AttributeEvents\\LaravelModelAttributeEventsServiceProvider"
             ]
         }
     },

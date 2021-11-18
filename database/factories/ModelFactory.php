@@ -1,6 +1,6 @@
 <?php
 
-namespace Walirazzaq\LaravelModelAttributeEvents\Database\Factories;
+namespace Walirazzaq\AttributeEvents\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 

@@ -1,5 +1,5 @@
 <?php
 
-use Walirazzaq\LaravelModelAttributeEvents\Tests\TestCase;
+use Walirazzaq\AttributeEvents\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);

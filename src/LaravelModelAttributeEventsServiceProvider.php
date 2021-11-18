@@ -1,6 +1,6 @@
 <?php
 
-namespace Walirazzaq\LaravelModelAttributeEvents;
+namespace Walirazzaq\AttributeEvents;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;

@@ -1,10 +1,10 @@
 <?php
 
-namespace Walirazzaq\LaravelModelAttributeEvents\Tests;
+namespace Walirazzaq\AttributeEvents\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Walirazzaq\LaravelModelAttributeEvents\LaravelModelAttributeEventsServiceProvider;
+use Walirazzaq\AttributeEvents\LaravelModelAttributeEventsServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -13,7 +13,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Walirazzaq\\LaravelModelAttributeEvents\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Walirazzaq\\AttributeEvents\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace Walirazzaq\LaravelModelAttributeEvents\Models\Concerns;
+namespace Walirazzaq\AttributeEvents\Models\Concerns;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Walirazzaq\LaravelModelAttributeEvents\Events\BroadcastableModelAttributeEventOccurred;
+use Walirazzaq\AttributeEvents\Events\BroadcastableModelAttributeEventOccurred;
 
 /**
  * @property \Illuminate\Database\Eloquent\Model $this

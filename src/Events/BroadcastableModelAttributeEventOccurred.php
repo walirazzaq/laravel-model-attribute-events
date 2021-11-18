@@ -1,6 +1,6 @@
 <?php
 
-namespace Walirazzaq\LaravelModelAttributeEvents\Events;
+namespace Walirazzaq\AttributeEvents\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;

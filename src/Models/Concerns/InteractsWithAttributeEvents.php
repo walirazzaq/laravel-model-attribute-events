@@ -1,6 +1,6 @@
 <?php
 
-namespace Walirazzaq\LaravelModelAttributeEvents\Models\Concerns;
+namespace Walirazzaq\AttributeEvents\Models\Concerns;
 
 
 /**

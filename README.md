@@ -61,7 +61,7 @@ return [
 ## Usage
 
 ```php
-$laravel-model-attribute-events = new Walirazzaq\LaravelModelAttributeEvents();
+$laravel-model-attribute-events = new Walirazzaq\AttributeEvents();
 echo $laravel-model-attribute-events->echoPhrase('Hello, Walirazzaq!');
 ```
 
