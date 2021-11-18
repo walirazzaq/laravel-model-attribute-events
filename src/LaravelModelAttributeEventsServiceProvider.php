@@ -4,7 +4,6 @@ namespace Walirazzaq\LaravelModelAttributeEvents;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Walirazzaq\LaravelModelAttributeEvents\Commands\LaravelModelAttributeEventsCommand;
 
 class LaravelModelAttributeEventsServiceProvider extends PackageServiceProvider
 {
