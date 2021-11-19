@@ -34,7 +34,9 @@ trait HasAttributeEvents
                         ->filter()
                         ->unique();
                     $this->observableAttributes =  $observables->all();
-                    $observables = $observables->map(fn ($name) => 'updated' . ucfirst(Str::camel($name)));
+                    $normalObservables = $observables->map(fn ($name) => $this::getObserverableAttributeName($name));
+                    $distinctObservables = $observables->map(fn ($name) => $this->getDistinctObservableAttributeName($name));
+                    $observables = $normalObservables->merge($distinctObservables)->filter()->unique();
                     $this->setObservableEvents($observables->all());
                     $observables->each(fn ($event) => $this->fireModelEvent($event, false));
                 },
@@ -45,7 +47,29 @@ trait HasAttributeEvents
 
     public static function onAttributeUpdated(string $attribute, Closure $callback)
     {
-        $event = 'updated' . ucfirst(Str::camel($attribute));
-        static::registerModelEvent($event, $callback);
+        static::registerModelEvent(
+            static::getObserverableAttributeName($attribute),
+            $callback
+        );
+    }
+
+    public function getDistinctObservableAttributeName($attribute)
+    {
+        if (in_array($attribute, $this->getObservableEvents())) {
+            return $attribute;
+        }
+        if ($this->getKey()) {
+            $attribute = $attribute . $this->getKey();
+        }
+        return static::getObserverableAttributeName($attribute);
+    }
+
+    public static function getObserverableAttributeName($attribute)
+    {
+        $instance = new static;
+        if (in_array($attribute, $instance->getObservableEvents())) {
+            return $attribute;
+        }
+        return 'updated' . ucfirst(Str::camel($attribute));
     }
 }
