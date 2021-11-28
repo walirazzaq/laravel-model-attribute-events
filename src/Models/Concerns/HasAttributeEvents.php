@@ -53,6 +53,19 @@ trait HasAttributeEvents
         );
     }
 
+    public function dispatchModelAttributeEvent(string $attribute, bool $broadcast = true, $channels = null)
+    {
+        foreach ([
+            $this->getDistinctObservableAttributeName($attribute),
+            static::getObserverableAttributeName($attribute)
+        ] as $event) {
+            $this->fireModelEvent($event, false);
+        }
+        if ($broadcast) {
+            $this->broadcastAttributeEvent($attribute, $channels);
+        }
+    }
+
     public function getDistinctObservableAttributeName($attribute)
     {
         if (in_array($attribute, $this->getObservableEvents())) {

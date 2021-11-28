@@ -43,7 +43,7 @@ class SubscribeTo
             if (method_exists($object, 'getDistinctObservableAttributeName')) {
                 $event = $object->getDistinctObservableAttributeName($event);
             }
-            $this->event = "eloquent.{$event}: ".get_class($object);
+            $this->event = "eloquent.{$event}: " . get_class($object);
         } else {
             if (method_exists($object, 'getObserverableAttributeName')) {
                 $event = $object::getObserverableAttributeName($event);
@@ -74,7 +74,17 @@ class SubscribeTo
             $this->dispatcher->listen($this->event, [$component, $this->method]);
         }
         if ($this->emit) {
-            $this->dispatcher->listen($this->event, fn ($payload) => $component->emit($this->event, $payload));
+            $this->dispatcher->listen($this->event, fn ($payload) => $component->emit($this->event, $this->toLivewireEmit($payload)));
         }
+    }
+    protected function toLivewireEmit($payload)
+    {
+        if (is_object($payload) == false) return $payload;
+
+        if (method_exists($payload, 'toLivewireEmit')) return $payload->toLivewireEmit();
+
+        if ($payload instanceof Model) return $payload->getKey();
+
+        return $payload;
     }
 }

@@ -15,7 +15,7 @@ trait BroadcastsAttributeEvents
     protected static $defaultAttributeBroadcastChannels = [];
 
 
-    public static function initializeBroadcastsAttributeEvents()
+    public static function bootBroadcastsAttributeEvents()
     {
         static::updated(function (Model $model) {
             (Closure::bind(
@@ -84,9 +84,13 @@ trait BroadcastsAttributeEvents
      * @param  string  $attribute
      * @return BroadcastableModelAttributeEventOccurred
      */
-    protected function newBroadcastableAttributeEvent($attribute)
+    public function newBroadcastableAttributeEvent($attribute)
     {
-        return new BroadcastableModelAttributeEventOccurred($this, $attribute);
+        if ($this->dontBroadcastAttributeToCurrentUser($attribute)) {
+            return (new BroadcastableModelAttributeEventOccurred($this, $attribute))->dontBroadcastToCurrentUser();
+        } else {
+            return (new BroadcastableModelAttributeEventOccurred($this, $attribute));
+        }
     }
 
     /**
@@ -117,6 +121,11 @@ trait BroadcastsAttributeEvents
     public function broadcastAttributeQueue($attribute = null)
     {
         //
+    }
+
+    public function dontBroadcastAttributeToCurrentUser($attribute)
+    {
+        return true;
     }
 
     /**
