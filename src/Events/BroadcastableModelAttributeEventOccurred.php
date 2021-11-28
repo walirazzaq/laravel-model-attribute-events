@@ -10,7 +10,8 @@ use Illuminate\Support\Str;
 
 class BroadcastableModelAttributeEventOccurred implements ShouldBroadcast
 {
-    use InteractsWithSockets, SerializesModels;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     /**
      * The model instance corresponding to the event.
@@ -108,9 +109,10 @@ class BroadcastableModelAttributeEventOccurred implements ShouldBroadcast
         if (is_null($payload) == false) {
             return $payload;
         }
+
         return [
             $this->model->getKeyName() => $this->model->getKey(),
-            $this->attribute => rescue(fn () => $this->model->getAttribute($this->attribute))
+            $this->attribute => rescue(fn () => $this->model->getAttribute($this->attribute)),
         ];
     }
 

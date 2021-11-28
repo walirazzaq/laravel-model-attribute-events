@@ -13,6 +13,7 @@ use Walirazzaq\AttributeEvents\Attributes\ListenToModelAttr;
 trait HasModelAttributeListeners
 {
     protected array $modelAttributeListeners = [];
+
     public function mountHasModelAttributeListeners()
     {
         /**

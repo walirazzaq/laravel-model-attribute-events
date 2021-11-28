@@ -8,13 +8,14 @@ use Illuminate\Contracts\Broadcasting\Broadcaster;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use \Illuminate\Support\Str;
+use Illuminate\Support\Str;
 
 class BroadcastingAuthorizer
 {
     protected PusherBroadcaster $broadcaster;
     protected static $channels = [];
     protected $listeners = [];
+
     public function __construct(
         public Model $model,
         public array $attributes
@@ -33,18 +34,20 @@ class BroadcastingAuthorizer
             $event = $this->model->newBroadcastableAttributeEvent($attribute);
             $on = $this->stringify($event->broadcastOn());
             $as = trim($event->broadcastAs());
-            if (blank($on) || !$as) {
+            if (blank($on) || ! $as) {
                 continue;
             }
             if ($toUse = $this->getFromCachedIfAvailable($on)) {
                 $this->configureChannel($toUse, $as);
+
                 continue;
             }
             if ($toUse = $this->getPublicChannels($on)) {
                 $this->configureChannel($toUse, $as);
+
                 continue;
             }
-            if (!$user = auth()->user()) {
+            if (! $user = auth()->user()) {
                 continue;
             }
             foreach ($on as  $channel) {
@@ -54,7 +57,7 @@ class BroadcastingAuthorizer
                      * @var PusherBroadcaster $this
                      */
                     foreach ($this->channels as $pattern => $callback) {
-                        if (!$this->channelNameMatchesPattern($channel, $pattern)) {
+                        if (! $this->channelNameMatchesPattern($channel, $pattern)) {
                             continue;
                         }
 
@@ -68,6 +71,7 @@ class BroadcastingAuthorizer
                 if ($authorizer($request, $this->broadcaster->normalizeChannelName($channel))) {
                     $this->configureChannel([$channel], $as);
                     array_push(static::$channels, $channel);
+
                     break;
                 }
             }
@@ -81,6 +85,7 @@ class BroadcastingAuthorizer
             $this->formattedChannel(Arr::first($channels)) . ',' . $this->formattedEvent($event)
         );
     }
+
     protected function formattedChannel($channel)
     {
         $privateEncrypted = 'private-encrypted-';
@@ -95,6 +100,7 @@ class BroadcastingAuthorizer
         if (Str::startsWith($channel, $presence)) {
             return "echo-presence:" . Str::replaceFirst($presence, "", $channel);
         }
+
         return "echo:" . $channel;
     }
 
@@ -121,6 +127,7 @@ class BroadcastingAuthorizer
     public function getListeners(): array
     {
         $this->handle();
+
         return $this->listeners;
     }
 }

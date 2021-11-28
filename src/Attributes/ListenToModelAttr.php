@@ -15,6 +15,7 @@ class ListenToModelAttr
     public array $attributes = [];
     public ?Model $model = null;
     public ?Dispatcher $dispatcher = null;
+
     public function __construct(
         string|array $attribute,
         public string $method = '$refresh',
@@ -33,12 +34,15 @@ class ListenToModelAttr
     public function setModel(Model $model): self
     {
         $this->model = $model;
+
         return $this;
     }
 
     public function nativeListeners(): array
     {
-        if (!$this->native || !auth()->user()) return [];
+        if (! $this->native || ! auth()->user()) {
+            return [];
+        }
         $listeners = [];
         foreach ($this->attributes  as $attribute) {
             $event = $attribute;
@@ -47,18 +51,22 @@ class ListenToModelAttr
             }
             $listeners["eloquent.{$event}: " . get_class($this->model)] = $this->method;
         }
+
         return $listeners;
     }
 
     public function echoListeners(): array
     {
-        if (!$this->echo) return [];
+        if (! $this->echo) {
+            return [];
+        }
 
         $listeners = BroadcastingAuthorizer::make($this->model, $this->attributes)->getListeners();
         $withMethod = [];
         foreach ($listeners as $listener) {
             $withMethod[$listener] = $this->method;
         }
+
         return $withMethod;
     }
 
@@ -66,5 +74,4 @@ class ListenToModelAttr
     {
         return array_merge($this->nativeListeners(), $this->echoListeners());
     }
-
 }

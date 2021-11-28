@@ -12,8 +12,8 @@ use Illuminate\Support\Str;
  */
 trait HasAttributeEvents
 {
-
     protected $observableAttributes = [];
+
     protected function getMappedAttributeEventNames(): array
     {
         return property_exists($this, 'mapAttributeEventName') ? array_filter(Arr::wrap($this->mapAttributeEventName)) : [];
@@ -33,7 +33,7 @@ trait HasAttributeEvents
                     )->merge($dirty)
                         ->filter()
                         ->unique();
-                    $this->observableAttributes =  $observables->all();
+                    $this->observableAttributes = $observables->all();
                     $normalObservables = $observables->map(fn ($name) => $this::getObserverableAttributeName($name));
                     $distinctObservables = $observables->map(fn ($name) => $this->getDistinctObservableAttributeName($name));
                     $observables = $normalObservables->merge($distinctObservables)->filter()->unique();
@@ -57,7 +57,7 @@ trait HasAttributeEvents
     {
         foreach ([
             $this->getDistinctObservableAttributeName($attribute),
-            static::getObserverableAttributeName($attribute)
+            static::getObserverableAttributeName($attribute),
         ] as $event) {
             $this->fireModelEvent($event, false);
         }
@@ -74,15 +74,17 @@ trait HasAttributeEvents
         if ($this->getKey()) {
             $attribute = $attribute . $this->getKey();
         }
+
         return static::getObserverableAttributeName($attribute);
     }
 
     public static function getObserverableAttributeName($attribute)
     {
-        $instance = new static;
+        $instance = new static();
         if (in_array($attribute, $instance->getObservableEvents())) {
             return $attribute;
         }
+
         return 'updated' . ucfirst(Str::camel($attribute));
     }
 }

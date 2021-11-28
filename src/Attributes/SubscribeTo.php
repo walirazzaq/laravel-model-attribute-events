@@ -14,6 +14,7 @@ class SubscribeTo
 {
     public ?string $event = null;
     public ?Dispatcher $dispatcher = null;
+
     public function __construct(
         string|array $target,
         public ?string $method = null,
@@ -22,6 +23,7 @@ class SubscribeTo
         $this->dispatcher = app('events');
         if (is_string($target)) {
             $this->event = $target;
+
             return;
         }
         if (Arr::isAssoc($target)) {
@@ -36,7 +38,7 @@ class SubscribeTo
 
     protected function getDispatcherAndEventForModel($object)
     {
-        throw_if(!$object || is_a($object, Model::class, true) == false);
+        throw_if(! $object || is_a($object, Model::class, true) == false);
         $event = $this->event;
 
         if (is_object($object)) {
@@ -58,18 +60,22 @@ class SubscribeTo
         if ($object instanceof Model) {
             $this->getDispatcherAndEventForModel($object);
         }
+
         return $this;
     }
 
     public function forMethod(string $name): self
     {
         $this->method = $name;
+
         return $this;
     }
 
     public function subscribe(Component $component)
     {
-        if (!$this->event && !$this->dispatcher) return;
+        if (! $this->event && ! $this->dispatcher) {
+            return;
+        }
         if ($this->method) {
             $this->dispatcher->listen($this->event, [$component, $this->method]);
         }
@@ -77,13 +83,20 @@ class SubscribeTo
             $this->dispatcher->listen($this->event, fn ($payload) => $component->emit($this->event, $this->toLivewireEmit($payload)));
         }
     }
+
     protected function toLivewireEmit($payload)
     {
-        if (is_object($payload) == false) return $payload;
+        if (is_object($payload) == false) {
+            return $payload;
+        }
 
-        if (method_exists($payload, 'toLivewireEmit')) return $payload->toLivewireEmit();
+        if (method_exists($payload, 'toLivewireEmit')) {
+            return $payload->toLivewireEmit();
+        }
 
-        if ($payload instanceof Model) return $payload->getKey();
+        if ($payload instanceof Model) {
+            return $payload->getKey();
+        }
 
         return $payload;
     }

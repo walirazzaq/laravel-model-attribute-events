@@ -14,7 +14,6 @@ trait BroadcastsAttributeEvents
 {
     protected static $defaultAttributeBroadcastChannels = [];
 
-
     public static function bootBroadcastsAttributeEvents()
     {
         static::updated(function (Model $model) {
@@ -28,6 +27,7 @@ trait BroadcastsAttributeEvents
             ))();
         });
     }
+
     public static function setDefaultAttributeBroadcastChannels($channels)
     {
         static::$defaultAttributeBroadcastChannels = Arr::wrap($channels);
@@ -52,11 +52,11 @@ trait BroadcastsAttributeEvents
      */
     protected function broadcastIfBroadcastChannelsExistForAttributeEvent($instance, $attribute, $channels = null)
     {
-        if (!static::$isBroadcasting) {
+        if (! static::$isBroadcasting) {
             return;
         }
 
-        if (!empty($this->broadcastAttributeOn($attribute)) || !empty($channels)) {
+        if (! empty($this->broadcastAttributeOn($attribute)) || ! empty($channels)) {
             return broadcast($instance->onChannels(Arr::wrap($channels)));
         }
     }
@@ -103,6 +103,7 @@ trait BroadcastsAttributeEvents
     {
         return static::$defaultAttributeBroadcastChannels ?: [];
     }
+
     /**
      * Get the queue connection that should be used to broadcast model events.
      * @param string|null $attribute

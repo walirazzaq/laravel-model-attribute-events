@@ -2,11 +2,11 @@
 
 namespace Walirazzaq\AttributeEvents\Models\Concerns;
 
-
 /**
  * @property \Illuminate\Database\Eloquent\Model $this
  */
 trait InteractsWithAttributeEvents
 {
-    use HasAttributeEvents, BroadcastsAttributeEvents;
+    use HasAttributeEvents;
+    use BroadcastsAttributeEvents;
 }
